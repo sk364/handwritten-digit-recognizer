@@ -87,3 +87,18 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# images
+img/*
+
+# neural net models
+models/*
+
+# mnist data
+data/*
+
+# csv
+*.csv
+
+# pdf
+*.pdf

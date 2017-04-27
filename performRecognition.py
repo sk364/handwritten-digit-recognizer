@@ -55,10 +55,13 @@ def get_decimal_in_box(input_im):
     cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
 
     im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    im_gray = cv2.GaussianBlur(im_gray, (1, 1), 0)
+    
+    im_gray = cv2.bilateralFilter(im_gray, 11, 17, 17)
+    im_gray = cv2.bilateralFilter(im_gray, 3, 5, 5)
+    im_gray = cv2.GaussianBlur(im_gray, (3, 5), 0,3)
 
-    im_th = cv2.adaptiveThreshold(im_gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                                  cv2.THRESH_BINARY_INV, 15, 10)
+    im_th = cv2.adaptiveThreshold(im_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                  cv2.THRESH_BINARY_INV, 7, 1)
 
     ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL,
                                   cv2.CHAIN_APPROX_SIMPLE)
@@ -87,7 +90,7 @@ def get_decimal_in_box(input_im):
         )
 
         # Make the rectangular region around the digit
-        leng = int(rect[3] * 1.6) ### change this value
+        leng = int(rect[3] * 0.8) ### change this value
         pt1 = int(rect[1] + rect[3] // 2 - leng // 2)
         pt2 = int(rect[0] + rect[2] // 2 - leng // 2)
 
